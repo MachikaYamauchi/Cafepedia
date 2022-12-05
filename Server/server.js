@@ -22,7 +22,7 @@ app.use("/cafe", cafeRouter)
 const MONGODB_URL =
   "mongodb+srv://machika:bL8vwmdraXiti-F@cluster0.gnuwln2.mongodb.net/cafe_db?retryWrites=true&w=majority"
 
-const port = 8000;
+const port = 8800;
 
 mongoose
   .connect(MONGODB_URL)
