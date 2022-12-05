@@ -22,11 +22,25 @@ const AddEditCafe = () => {
   const [cafeData, setCafeData] = useState(initialState);
 
   const { title, description, tags } = cafeData;
-  const handleSubmit = () => {};
-  const onInputChange = () => {};
-  const handleAddTag = () => {};
-  const handleDeleteTag = () => {};
-  const handleClear = () => {};
+  const handleSubmit = (e) => {
+    e.preventDefault();
+  };
+  const onInputChange = (e) => {
+    const { name, value } = e.target;
+    setCafeData({ ...cafeData, [name]: value });
+  };
+  const handleAddTag = (tag) => {
+    setCafeData({ ...cafeData, tags: [...cafeData.tags, tag] });
+  };
+  const handleDeleteTag = (deleteTag) => {
+    setCafeData({
+      ...cafeData,
+      tags: cafeData.tags.filter((tag) => tag !== deleteTag),
+    });
+  };
+  const handleClear = () => {
+    setCafeData({title:"", description:"", tags:[]})
+  };
   return (
     <div
       style={{
