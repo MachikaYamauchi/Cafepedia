@@ -17,6 +17,6 @@ const cafeSchema = mongoose.Schema({
     }
 });
 
-const CafeModal = mongoose.modelNames("Cafe", cafeSchema);
+const CafeModal = mongoose.model("Cafe", cafeSchema);
 
 export default CafeModal;

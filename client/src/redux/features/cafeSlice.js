@@ -3,9 +3,9 @@ import * as api from "../api";
 
 export const createCafe = createAsyncThunk(
   "cafe/createCafe",
-  async ({ cafeData, navigate, toast }, { rejectWithValue }) => {
+  async ({ updatedCafeData, navigate, toast }, { rejectWithValue }) => {
     try {
-      const response = await api.createCafe(cafeData);
+      const response = await api.createCafe(updatedCafeData);
       toast.success("Cafe added Successfully");
       navigate("/");
       return response.data;

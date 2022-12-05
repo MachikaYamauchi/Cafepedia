@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
@@ -10,11 +10,11 @@ import store from './redux/store';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <React.StrictMode>
+  <Fragment>
     <Provider store={store}>
       <App />
     </Provider>
-  </React.StrictMode>
+  </Fragment>
 );
 
 // If you want to start measuring performance in your app, pass a function

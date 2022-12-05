@@ -4,6 +4,7 @@ export const createCafe = async (req, res) => {
     const cafe = req.body;
     const newCafe = new CafeModal({
         ...cafe,
+        creator:req.userId, //from middleware
         createdAt: new Date().toISOString()
     });
     try {

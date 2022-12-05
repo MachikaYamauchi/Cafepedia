@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   MDBCard,
   MDBCardBody,
@@ -11,6 +11,8 @@ import FileBase from "react-file-base64";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { Chip } from "@material-ui/core";
+import { useDispatch, useSelector } from "react-redux";
+import { createCafe } from "../redux/features/cafeSlice"
 
 const initialState = {
   title: "",
@@ -20,10 +22,24 @@ const initialState = {
 
 const AddEditCafe = () => {
   const [cafeData, setCafeData] = useState(initialState);
+  const {error, loading} = useSelector((state) => ({...state.cafe}))
+  const {user} = useSelector((state) => ({...state.auth}))// get the user name to send MongoDB
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const { title, description, tags } = cafeData;
+
+  useEffect(() =>{
+    error && toast.error(error)
+  }, [error])
+
   const handleSubmit = (e) => {
     e.preventDefault();
+    if(title && description && tags) {
+      const updatedCafeData = {...cafeData, name:user?.result?.name};
+      dispatch(createCafe({updatedCafeData, navigate, toast}));
+      handleClear();
+    }
   };
   const onInputChange = (e) => {
     const { name, value } = e.target;
@@ -57,7 +73,7 @@ const AddEditCafe = () => {
         <MDBCardBody>
           <MDBValidation onSubmit={handleSubmit} className="row g-3" noValidate>
             <div className="col-md-12">
-              <input
+              <MDBInput
                 placeholder="Enter Title"
                 type="text"
                 value={title}
@@ -70,7 +86,7 @@ const AddEditCafe = () => {
               />
             </div>
             <div className="col-md-12">
-              <textarea
+              <MDBInput
                 placeholder="Enter Description"
                 type="text"
                 style={{ height: "100px" }}
@@ -80,6 +96,8 @@ const AddEditCafe = () => {
                 className="form-control"
                 required
                 invalid
+                textarea
+                rows={4}
                 validation="Please provide description"
               />
             </div>
