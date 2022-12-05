@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 import cors from "cors";
 import morgan from "morgan";
 import userRouter from "./routes/user.js";
+import cafeRouter from "./routes/cafe.js"
 
 // bL8vwmdraXiti-F
 // mongodb+srv://machika:<password>@cluster0.gnuwln2.mongodb.net/?retryWrites=true&w=majority
@@ -16,6 +17,7 @@ app.use(express.urlencoded({ limit: "30mb", extended: true }));
 app.use(cors());
 
 app.use("/users", userRouter); // http://localhost:8000/users/signup
+app.use("/cafe", cafeRouter)
 
 const MONGODB_URL =
   "mongodb+srv://machika:bL8vwmdraXiti-F@cluster0.gnuwln2.mongodb.net/cafe_db?retryWrites=true&w=majority"

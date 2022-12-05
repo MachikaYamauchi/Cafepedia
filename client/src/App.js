@@ -8,11 +8,20 @@ import Register from "./pages/Register";
 import { useEffect } from "react";
 import { gapi } from "gapi-script";
 import Header from "./components/Header";
+import { useDispatch } from "react-redux";
+import { setUser } from "./redux/features/authSlice";
+import AddEditCafe from "./pages/AddEditCafe";
 
 const clientId =
   "435928807684-f4auu37jmh4mq62rt71fuhdfhnk53gsb.apps.googleusercontent.com";
 
 function App() {
+  const dispatch = useDispatch();
+  const user = JSON.parse(localStorage.getItem("profile"));
+  useEffect(() => {
+    dispatch(setUser(user));
+  }, []);
+
   useEffect(() => {
     function start() {
       gapi.client.init({
@@ -22,6 +31,7 @@ function App() {
     };
     gapi.load("client:auth2", start);
   });
+
   return (
     <BrowserRouter>
       <div className="App">
@@ -31,6 +41,8 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/addCafe" element={<AddEditCafe />} />
+          <Route path="/editCafe/:id" element={<AddEditCafe />} />
         </Routes>
       </div>
     </BrowserRouter>
