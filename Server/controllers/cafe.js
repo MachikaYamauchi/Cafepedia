@@ -11,15 +11,25 @@ export const createCafe = async (req, res) => {
         await newCafe.save();
         res.status(201).json(newCafe)
     } catch (error) {
-        res.staus(404).json({message:"Something went wrong"})
+        res.status(404).json({message:"Something went wrong"})
+    }
+};
+
+export const getCafes = async (req, res) => {
+    try {
+        const cafes = await CafeModal.find();
+        res.status(200).json(cafes);
+    } catch(error) {
+        res.status(404).json({message:"Something went wrong"})
     }
 };
 
 export const getCafe = async (req, res) => {
+    const { id } = req.params;
     try {
-        const cafes = await CafeModal.find();
-        res.sttus(200).json(cafes);
+        const cafe = await CafeModal.findById(id);
+        res.status(200).json(cafe);
     } catch(error) {
-        res.staus(404).json({message:"Something went wrong"})
+        res.status(404).json({message:"Something went wrong"})
     }
-}
+};

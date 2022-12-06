@@ -2,10 +2,11 @@ import express from "express";
 const router = express.Router();
 import auth from "../middleware/auth.js";
 
-import { createCafe, getCafe } from "../controllers/cafe.js";
+import { createCafe, getCafes, getCafe } from "../controllers/cafe.js";
 
 router.post("/", auth,  createCafe);
-router.get("/", getCafe)
+router.get("/", getCafes);
+router.get("/:id", getCafe);
 
 
 

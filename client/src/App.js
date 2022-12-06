@@ -11,6 +11,7 @@ import Header from "./components/Header";
 import { useDispatch } from "react-redux";
 import { setUser } from "./redux/features/authSlice";
 import AddEditCafe from "./pages/AddEditCafe";
+import SingleCafe from "./pages/SingleCafe";
 
 const clientId =
   "435928807684-f4auu37jmh4mq62rt71fuhdfhnk53gsb.apps.googleusercontent.com";
@@ -43,6 +44,7 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/addCafe" element={<AddEditCafe />} />
           <Route path="/editCafe/:id" element={<AddEditCafe />} />
+          <Route path="/cafe/:id" element={<SingleCafe />} />
         </Routes>
       </div>
     </BrowserRouter>
