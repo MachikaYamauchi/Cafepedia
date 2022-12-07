@@ -1,4 +1,4 @@
-// To pu the "creator" info into MongoDB
+// To add the "creator" info into MongoDB
 // detemin which user is created by using token
 
 import jwt from "jsonwebtoken";

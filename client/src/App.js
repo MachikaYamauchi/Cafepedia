@@ -12,6 +12,8 @@ import { useDispatch } from "react-redux";
 import { setUser } from "./redux/features/authSlice";
 import AddEditCafe from "./pages/AddEditCafe";
 import SingleCafe from "./pages/SingleCafe";
+import Dashboard from "./pages/Dashboard";
+import PrivateRoute from "./components/PrivateRoute";
 
 const clientId =
   "435928807684-f4auu37jmh4mq62rt71fuhdfhnk53gsb.apps.googleusercontent.com";
@@ -26,10 +28,10 @@ function App() {
   useEffect(() => {
     function start() {
       gapi.client.init({
-        clientId:clientId,
-        scope:""
-      })
-    };
+        clientId: clientId,
+        scope: "",
+      });
+    }
     gapi.load("client:auth2", start);
   });
 
@@ -42,9 +44,31 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/addCafe" element={<AddEditCafe />} />
-          <Route path="/editCafe/:id" element={<AddEditCafe />} />
+          <Route
+            path="/addCafe"
+            element={
+              <PrivateRoute> {/* If user is not logged in, redirect to login page */}
+                <AddEditCafe />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/editCafe/:id"
+            element={
+              <PrivateRoute>  {/* If user is not logged in, redirect to login page */}
+                <AddEditCafe />
+              </PrivateRoute>
+            }
+          />
           <Route path="/cafe/:id" element={<SingleCafe />} />
+          <Route
+            path="/dashboard"
+            element={
+              <PrivateRoute>  {/* If user is not logged in, redirect to login page */}
+                <Dashboard />
+              </PrivateRoute>
+            }
+          />
         </Routes>
       </div>
     </BrowserRouter>

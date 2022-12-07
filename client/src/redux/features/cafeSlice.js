@@ -15,7 +15,8 @@ export const createCafe = createAsyncThunk(
   }
 );
 
-export const getCafes = createAsyncThunk(
+// Home page
+export const getCafes = createAsyncThunk( 
   "cafe/getCafes",
   async (_, { rejectWithValue }) => {
     try {
@@ -27,11 +28,25 @@ export const getCafes = createAsyncThunk(
   }
 );
 
+// Singlecafe page
 export const getCafe = createAsyncThunk(
   "cafe/getCafe",
   async (id, { rejectWithValue }) => {
     try {
       const response = await api.getCafe(id);
+      return response.data;
+    } catch (err) {
+      return rejectWithValue(err.response.data); // show error message form backend
+    }
+  }
+);
+
+// Dashboard page
+export const getCafesByUser = createAsyncThunk(
+  "cafe/getCafesByUser",
+  async (userId, { rejectWithValue }) => {
+    try {
+      const response = await api.getCafesByUser(userId);
       return response.data;
     } catch (err) {
       return rejectWithValue(err.response.data); // show error message form backend
@@ -79,6 +94,17 @@ const cafeSlice = createSlice({
       state.cafe = action.payload;
     },
     [getCafe.rejected]: (state, action) => {
+      state.loading = false;
+      state.error = action.payload.message;
+    },
+    [getCafesByUser.pending]: (state, action) => {
+      state.loading = true;
+    },
+    [getCafesByUser.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.userCafes = action.payload;
+    },
+    [getCafesByUser.rejected]: (state, action) => {
       state.loading = false;
       state.error = action.payload.message;
     },

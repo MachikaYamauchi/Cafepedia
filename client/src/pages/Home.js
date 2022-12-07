@@ -3,6 +3,7 @@ import { MDBCol, MDBContainer, MDBRow, MDBTypography } from "mdb-react-ui-kit";
 import { useDispatch, useSelector } from "react-redux";
 import { getCafes } from "../redux/features/cafeSlice";
 import CardCafe from "../components/CardCafe";
+import Spinner from "../components/Spinner";
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -13,7 +14,7 @@ const Home = () => {
   }, []);
 
   if (loading) {
-    return <h2>Loading...</h2>;
+    return <Spinner />;
   }
 
   return (
