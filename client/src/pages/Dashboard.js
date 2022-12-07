@@ -59,10 +59,9 @@ const Dashboard = () => {
       <hr style={{ maxWidth: "570px" }} />
       {userCafes &&
         userCafes.map((item) => (
-          <MDBCardGroup>
+          <MDBCardGroup key={item._id}>
             <MDBCard
               style={{ maxWidth: "600px" }}
-              key={item._id}
               className="mt-2"
             >
               <MDBRow className="g-0">

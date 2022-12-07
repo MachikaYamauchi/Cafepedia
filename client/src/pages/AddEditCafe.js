@@ -10,7 +10,6 @@ import ChipInput from "material-ui-chip-input";
 import FileBase from "react-file-base64";
 import { toast } from "react-toastify";
 import { useNavigate, useParams } from "react-router-dom";
-import { Chip } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
 import { createCafe, updateCafe } from "../redux/features/cafeSlice"
 
@@ -22,6 +21,7 @@ const initialState = {
 
 const AddEditCafe = () => {
   const [cafeData, setCafeData] = useState(initialState);
+  const [tagErrMsg, setTagErrMsg] = useState(null); //tag input is not Material UI -> customize error MSG
   const {error, loading, userCafes} = useSelector((state) => ({...state.cafe}))
   const {user} = useSelector((state) => ({...state.auth}))// get the user name to send MongoDB
   const dispatch = useDispatch();
@@ -43,6 +43,12 @@ const AddEditCafe = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    //tag input is not Material UI -> customize error MSG
+    if(!tags.length) {
+      setTagErrMsg("Please provide some tags");
+    }
+
     if(title && description && tags) {
       const updatedCafeData = {...cafeData, name:user?.result?.name}; // Add and Edit
 
@@ -60,6 +66,7 @@ const AddEditCafe = () => {
     setCafeData({ ...cafeData, [name]: value });
   };
   const handleAddTag = (tag) => {
+    setTagErrMsg(null); // Add tag -> disappear error MSG
     setCafeData({ ...cafeData, tags: [...cafeData.tags, tag] });
   };
   const handleDeleteTag = (deleteTag) => {
@@ -103,7 +110,6 @@ const AddEditCafe = () => {
               <MDBInput
                 placeholder="Enter Description"
                 type="text"
-                style={{ height: "100px" }}
                 value={description}
                 name="description"
                 onChange={onInputChange}
@@ -125,6 +131,7 @@ const AddEditCafe = () => {
                 onAdd={(tag) => handleAddTag(tag)}
                 onDelete={(tag) => handleDeleteTag(tag)}
               />
+              {tagErrMsg && (<div className="tagErrMsg">{tagErrMsg}</div>)}
             </div>
             <div className="d-flex justify-content-start">
               <FileBase

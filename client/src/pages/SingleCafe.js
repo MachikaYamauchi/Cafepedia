@@ -6,10 +6,9 @@ import {
   MDBCardImage,
   MDBContainer,
   MDBIcon,
-  MDBBtn,
 } from "mdb-react-ui-kit";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import moment from "moment";
 import { getCafe } from "../redux/features/cafeSlice";
 
