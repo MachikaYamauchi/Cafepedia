@@ -22,3 +22,6 @@ export const getCafe = (id) => API.get(`/cafe/${id}`); // id -> cafe id
 export const deleteCafe = (id) => API.delete(`/cafe/${id}`); // id -> cafe id
 export const updateCafe = (updatedCafeData, id) => API.patch(`/cafe/${id}`, updatedCafeData);
 export const getCafesByUser = (userId) => API.get(`/cafe/userCafes/${userId}`); // id -> user id
+
+export const getCafesBySearch = (searchQuery) => API.get(`/cafe/search?searchQuery=${searchQuery}`);
+export const getTagCafes = (tag) => API.get(`/cafe/tag/${tag}`); // id -> cafe id

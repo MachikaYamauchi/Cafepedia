@@ -76,6 +76,28 @@ export const updateCafe = async (req, res) => {
         await CafeModal.findByIdAndUpdate(id, updatedCafe, {new:true});
         res.json(updatedCafe)
     } catch(error) {
-        res.status(404).json({message:"Something went wrong"})
+        res.status(404).json({message:"Something went wrong"});
+    }
+};
+
+export const getCafesBySearch = async (req, res) => {
+    const {searchQuery} = req.query;
+    // user search the cafe title -> respond cafe info if the title is matched with database
+    try {
+        const title = new RegExp(searchQuery, "i");
+        const cafes = await CafeModal.find({title});
+        res.json(cafes);
+    } catch(error) {
+        res.status(404).json({message:"Something went wrong"});
+    }
+};
+
+export const getCafesByTag = async (req, res) => {
+    const {tag} = req.params;
+    try {
+        const cafes = await CafeModal.find({tags: {$in: tag}});
+        res.json(cafes);
+    } catch(error) {
+        res.status(404).json({message:"Something went wrong"});
     }
 };

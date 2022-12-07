@@ -83,12 +83,39 @@ export const updateCafe = createAsyncThunk(
   }
 );
 
+// Header component
+export const searchCafes = createAsyncThunk(
+  "cafe/searchCafes",
+  async (searchQuery, { rejectWithValue }) => {
+    try {
+      const response = await api.getCafesBySearch(searchQuery);
+      return response.data;
+    } catch (err) {
+      return rejectWithValue(err.response.data); // show error message form backend
+    }
+  }
+);
+
+// Header component
+export const tagCafes = createAsyncThunk(
+  "cafe/tagCafes",
+  async (tag, { rejectWithValue }) => {
+    try {
+      const response = await api.getTagCafes(tag);
+      return response.data;
+    } catch (err) {
+      return rejectWithValue(err.response.data); // show error message form backend
+    }
+  }
+);
+
 const cafeSlice = createSlice({
   name: "cafe",
   initialState: {
     cafe: {},
     cafes: [],
     userCafes: [],
+    tagCafes: [],
     error: "",
     loadding: false,
   },
@@ -168,6 +195,28 @@ const cafeSlice = createSlice({
       }
     },
     [updateCafe.rejected]: (state, action) => {
+      state.loading = false;
+      state.error = action.payload.message;
+    },
+    [searchCafes.pending]: (state, action) => {
+      state.loading = true;
+    },
+    [searchCafes.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.cafes = action.payload;
+    },
+    [searchCafes.rejected]: (state, action) => {
+      state.loading = false;
+      state.error = action.payload.message;
+    },
+    [tagCafes.pending]: (state, action) => {
+      state.loading = true;
+    },
+    [tagCafes.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.tagCafes = action.payload;
+    },
+    [tagCafes.rejected]: (state, action) => {
       state.loading = false;
       state.error = action.payload.message;
     },
