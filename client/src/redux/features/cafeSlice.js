@@ -16,7 +16,7 @@ export const createCafe = createAsyncThunk(
 );
 
 // Home page
-export const getCafes = createAsyncThunk( 
+export const getCafes = createAsyncThunk(
   "cafe/getCafes",
   async (_, { rejectWithValue }) => {
     try {
@@ -47,6 +47,19 @@ export const getCafesByUser = createAsyncThunk(
   async (userId, { rejectWithValue }) => {
     try {
       const response = await api.getCafesByUser(userId);
+      return response.data;
+    } catch (err) {
+      return rejectWithValue(err.response.data); // show error message form backend
+    }
+  }
+);
+
+export const deleteCafe = createAsyncThunk(
+  "cafe/deleteCafe",
+  async ({ id, toast }, { rejectWithValue }) => {
+    try {
+      const response = await api.deleteCafe(id);
+      toast.success("Cafe Delete Successfully");
       return response.data;
     } catch (err) {
       return rejectWithValue(err.response.data); // show error message form backend
@@ -105,6 +118,22 @@ const cafeSlice = createSlice({
       state.userCafes = action.payload;
     },
     [getCafesByUser.rejected]: (state, action) => {
+      state.loading = false;
+      state.error = action.payload.message;
+    },
+    [deleteCafe.pending]: (state, action) => {
+      state.loading = true;
+    },
+    [deleteCafe.fulfilled]: (state, action) => {
+      state.loading = false;
+      console.log("action", action)
+      const {arg} = action.meta // delete cafe on UI frontend
+      if(arg) {
+        state.userCafes = state.userCafes.filter((item) => item._id !== arg);
+        state.cafes = state.cafes.filter((item) => item._id !== arg);
+      }
+    },
+    [deleteCafe.rejected]: (state, action) => {
       state.loading = false;
       state.error = action.payload.message;
     },
