@@ -54,12 +54,28 @@ export const getCafesByUser = createAsyncThunk(
   }
 );
 
+// Dashboard page
 export const deleteCafe = createAsyncThunk(
   "cafe/deleteCafe",
   async ({ id, toast }, { rejectWithValue }) => {
     try {
       const response = await api.deleteCafe(id);
       toast.success("Cafe Delete Successfully");
+      return response.data;
+    } catch (err) {
+      return rejectWithValue(err.response.data); // show error message form backend
+    }
+  }
+);
+
+// Dashboard page
+export const updateCafe = createAsyncThunk(
+  "cafe/updateCafe",
+  async ({ id, updatedCafeData, toast, navigate }, { rejectWithValue }) => {
+    try {
+      const response = await api.updateCafe(updatedCafeData, id);
+      toast.success("Cafe Updated Successfully");
+      navigate("/");
       return response.data;
     } catch (err) {
       return rejectWithValue(err.response.data); // show error message form backend
@@ -127,13 +143,31 @@ const cafeSlice = createSlice({
     [deleteCafe.fulfilled]: (state, action) => {
       state.loading = false;
       console.log("action", action)
-      const {arg} = action.meta // delete cafe on UI frontend
-      if(arg) {
-        state.userCafes = state.userCafes.filter((item) => item._id !== arg);
-        state.cafes = state.cafes.filter((item) => item._id !== arg);
+      const {arg:{id}} = action.meta // delete cafe on UI frontend
+      if(id) {
+        state.userCafes = state.userCafes.filter((item) => item._id !== id);
+        state.cafes = state.cafes.filter((item) => item._id !== id);
       }
     },
     [deleteCafe.rejected]: (state, action) => {
+      state.loading = false;
+      state.error = action.payload.message;
+    },
+    [updateCafe.pending]: (state, action) => {
+      state.loading = true;
+    },
+    [updateCafe.fulfilled]: (state, action) => {
+      state.loading = false;
+      console.log("action", action)
+      const {arg:{id}} = action.meta // Update cafe on UI frontend
+      if(id) {
+        console.log("action.payload", action);
+        console.log("state", state)
+        state.userCafes = state.userCafes.map((item) => item._id === id ? action.payload : item);
+        state.cafes = state.cafes.map((item) => item._id === id ? action.payload : item);
+      }
+    },
+    [updateCafe.rejected]: (state, action) => {
       state.loading = false;
       state.error = action.payload.message;
     },

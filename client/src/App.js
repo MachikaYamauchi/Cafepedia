@@ -14,6 +14,7 @@ import AddEditCafe from "./pages/AddEditCafe";
 import SingleCafe from "./pages/SingleCafe";
 import Dashboard from "./pages/Dashboard";
 import PrivateRoute from "./components/PrivateRoute";
+import NotFound from "./pages/NotFound";
 
 const clientId =
   "435928807684-f4auu37jmh4mq62rt71fuhdfhnk53gsb.apps.googleusercontent.com";
@@ -69,6 +70,7 @@ function App() {
               </PrivateRoute>
             }
           />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </div>
     </BrowserRouter>

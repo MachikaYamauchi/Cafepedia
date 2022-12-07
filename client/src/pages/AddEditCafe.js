@@ -9,10 +9,10 @@ import {
 import ChipInput from "material-ui-chip-input";
 import FileBase from "react-file-base64";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Chip } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
-import { createCafe } from "../redux/features/cafeSlice"
+import { createCafe, updateCafe } from "../redux/features/cafeSlice"
 
 const initialState = {
   title: "",
@@ -22,12 +22,20 @@ const initialState = {
 
 const AddEditCafe = () => {
   const [cafeData, setCafeData] = useState(initialState);
-  const {error, loading} = useSelector((state) => ({...state.cafe}))
+  const {error, loading, userCafes} = useSelector((state) => ({...state.cafe}))
   const {user} = useSelector((state) => ({...state.auth}))// get the user name to send MongoDB
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
   const { title, description, tags } = cafeData;
+  const {id} = useParams(); //get id from URL -> edit
+
+  // Edit
+  useEffect(() => {
+    if(id) { 
+      const singleCafe = userCafes.find((cafe) => cafe._id === id);
+      setCafeData({...singleCafe})
+    }
+  }, [id])
 
   useEffect(() =>{
     error && toast.error(error)
@@ -36,8 +44,14 @@ const AddEditCafe = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if(title && description && tags) {
-      const updatedCafeData = {...cafeData, name:user?.result?.name};
-      dispatch(createCafe({updatedCafeData, navigate, toast}));
+      const updatedCafeData = {...cafeData, name:user?.result?.name}; // Add and Edit
+
+      if(!id) {
+        dispatch(createCafe({updatedCafeData, navigate, toast})); //Add
+      } else {
+        dispatch(updateCafe({id, updatedCafeData, toast, navigate})); //Edit
+      }
+      
       handleClear();
     }
   };
@@ -69,7 +83,7 @@ const AddEditCafe = () => {
       className="container"
     >
       <MDBCard alignment="center">
-        <h5>Add Cafe</h5>
+        <h5>{id ? "Update Cafe" : "Add Cafe"}</h5>
         <MDBCardBody>
           <MDBValidation onSubmit={handleSubmit} className="row g-3" noValidate>
             <div className="col-md-12">
@@ -122,7 +136,9 @@ const AddEditCafe = () => {
               />
             </div>
             <div className="col-12">
-              <MDBBtn style={{ width: "100%" }}>Submit</MDBBtn>
+              <MDBBtn style={{ width: "100%" }}>
+                { id ? "Update" : "Submit" }
+              </MDBBtn>
               <MDBBtn
                 style={{ width: "100%" }}
                 className="mt-2"
