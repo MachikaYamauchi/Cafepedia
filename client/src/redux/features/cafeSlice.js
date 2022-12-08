@@ -97,8 +97,8 @@ export const searchCafes = createAsyncThunk(
 );
 
 // Header component
-export const tagCafes = createAsyncThunk(
-  "cafe/tagCafes",
+export const getCafesByTag = createAsyncThunk(
+  "cafe/getCafesByTag",
   async (tag, { rejectWithValue }) => {
     try {
       const response = await api.getTagCafes(tag);
@@ -209,14 +209,14 @@ const cafeSlice = createSlice({
       state.loading = false;
       state.error = action.payload.message;
     },
-    [tagCafes.pending]: (state, action) => {
+    [getCafesByTag.pending]: (state, action) => {
       state.loading = true;
     },
-    [tagCafes.fulfilled]: (state, action) => {
+    [getCafesByTag.fulfilled]: (state, action) => {
       state.loading = false;
       state.tagCafes = action.payload;
     },
-    [tagCafes.rejected]: (state, action) => {
+    [getCafesByTag.rejected]: (state, action) => {
       state.loading = false;
       state.error = action.payload.message;
     },

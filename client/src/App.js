@@ -15,6 +15,7 @@ import SingleCafe from "./pages/SingleCafe";
 import Dashboard from "./pages/Dashboard";
 import PrivateRoute from "./components/PrivateRoute";
 import NotFound from "./pages/NotFound";
+import TagCafes from "./pages/TagCafes";
 
 const clientId =
   "435928807684-f4auu37jmh4mq62rt71fuhdfhnk53gsb.apps.googleusercontent.com";
@@ -44,6 +45,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/cafes/search" element={<Home />} />
+          <Route path="/cafes/tag/:tag" element={<TagCafes />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route

@@ -101,3 +101,13 @@ export const getCafesByTag = async (req, res) => {
         res.status(404).json({message:"Something went wrong"});
     }
 };
+
+export const getRelatedCafes = async (req, res) => {
+    const tag = req.body;
+    try {
+        const cafes = await CafeModal.find({tags: {$in: tag}});
+        res.json(cafes);
+    } catch(error) {
+        res.status(404).json({message:"Something went wrong"});
+    }
+};
